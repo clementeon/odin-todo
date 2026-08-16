@@ -1,0 +1,21 @@
+*{
+	margin: 0;
+}
+body {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+}
+
+#left-bar {
+    flex: 2;
+}
+
+#center {
+    flex: 4;
+	background-color: orange;
+}
+
+#right-bar {
+    flex: 2;
+}
