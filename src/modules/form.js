@@ -1,13 +1,11 @@
-function loadForm(todo) {
+function loadForm(todo = {}) {
 	const bar = document.getElementById("right-bar");
 
 	const form = document.createElement("form");
 
 	form.id = "todo-form";
-	form.action = "post";
+	form.method = "post";
 	form.innerHTML = `
-		<label for="title">Title</label>
-			<br>
 			<input type="text" name="title" id="title">
 			<br>
 			<label for="notes">Notes</label>
@@ -20,10 +18,29 @@ function loadForm(todo) {
 			<br>
 			<label for="priority">Priorty</label>
 			<input type="checkbox" name="priority" id="priority">
-			<button type="submit" id="submit">Submit</button>`;
+			<div class="buttons">
+			<div class="form-button>
+			<button type="button" id="cancel">Cancel</button>
+			<button type="submit" id="submit">Submit</button>
+			</div>
+			<button type="button" id="clear">Clear</button>
+			</div>`;
+
+	if (todo) {
+		form.querySelector("#title").value = todo.title ?? "";
+		form.querySelector("#notes").value = todo.notes ?? "";
+		form.querySelector("#date").value = todo.date ?? "";
+		form.querySelector("#priority").checked = todo.priority ?? false;
+	}
 
 	bar.append(form);
 	return form;
 }
 
-export {loadForm};
+function clearForm() {
+	const form = document.getElementById("todo-form");
+	if (form) {
+		form.remove();
+	}
+}
+export { loadForm, clearForm };

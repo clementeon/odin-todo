@@ -19,3 +19,17 @@ body {
 #right-bar {
     flex: 2;
 }
+
+.project {
+	background-color: green;
+}
+
+.todo-list {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
+.todo {
+	background-color: blue;
+}

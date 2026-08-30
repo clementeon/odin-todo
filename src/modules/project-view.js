@@ -1,16 +1,25 @@
 export default function loadProject(projectManager) {
-	const leftBar = document.getElementById('left-bar');
+    const leftBar = document.getElementById('left-bar');
 
-	let temp = document.createElement('div');
+    const projectList = document.createElement('div');
+    projectList.classList.add('project-list');
 
-	projectManager.projects.forEach(element => {
-		let tempDiv = document.createElement('div')
-		tempDiv.classList.add('project');
-		tempDiv.innerHTML = `<h2>${element.title}</h2>
-		<p>${element.todos.length} Todos</p>`
-		tempDiv.append(temp);
-	});
+    projectManager.projects.forEach(element => {
+        const projectDiv = document.createElement('div');
+        projectDiv.classList.add('project');
 
-	temp.append(leftBar);
+        projectDiv.innerHTML = `
+		<div class="project-details">
+            <h2>${element.title}</h2>
+            <p>${element.todos.length} Todos</p>
+			</div>
+			<button id="delete-project">x</button>
+        `;
+		projectDiv.dataset.id = element.id;
 
+        projectList.append(projectDiv);
+    });
+
+    leftBar.append(projectList);
+	return projectList;
 }

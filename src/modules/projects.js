@@ -6,10 +6,12 @@ export default class Project {
 		this.todos = [];
 		this.prioritySort = false;
 		this.currentTodo = null;
+		this.isProtected = false;
+		this.id = crypto.randomUUID();
 	}
 
-	createTodo(title, note, date, priority) {
-		this.addTodo(new Todo(title, note, date, priority));
+	createTodo({ title, note, date, priority }) {
+		this.addTodo(new Todo({ title, note, date, priority }));
 	}
 
 	addTodo(todo) {
@@ -34,6 +36,15 @@ export default class Project {
 				let temp = this.todos[i];
 				this.todos.splice(i, 1);
 				return temp;
+			}
+		}
+	}
+
+
+	findTodo(id) {
+		for (let i = 0; i < this.todos.length; i++) {
+			if (this.todos[i].id == id) {
+				return this.todos[i];
 			}
 		}
 	}

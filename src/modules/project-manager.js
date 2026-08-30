@@ -27,5 +27,17 @@ export default class ProjectManager {
 		}
 	}
 
+	findProject(id) {
+		for(let i = 0; i < this.projects.length; i++) {
+			if (this.projects[i].id == id) {
+				return this.projects[i];
+			}
+		}
+	}
+
+	addProtect(project){
+		project.isProtected = true;
+	}
+
 
 }
