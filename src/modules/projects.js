@@ -11,16 +11,27 @@ export default class Project {
 	}
 
 	createTodo({ title, note, date, priority }) {
-		this.addTodo(new Todo({ title, note, date, priority }));
+		const temp = new Todo({ title, note, date, priority });
+		if (this.addTodo(temp)) {
+			return temp;
+		}
 	}
 
 	addTodo(todo) {
+		for (let i = 0; i < this.todos.length; i++) {
+			if (this.todos[i].title == todo.title) {
+				return;
+			}
+		}
 		this.todos.push(todo);
+		return true;
 	}
 
 	editTodo(id, form) {
+		console.log("editing");
 		for (let i = 0; i < this.todos.length; i++) {
 			if (this.todos[i].id == id) {
+				console.log("todo found");
 				this.todos[i].title = form.elements.title.value;
 				this.todos[i].notes = form.elements.notes.value;
 				this.todos[i].date = form.elements.date.value;
@@ -39,7 +50,6 @@ export default class Project {
 			}
 		}
 	}
-
 
 	findTodo(id) {
 		for (let i = 0; i < this.todos.length; i++) {

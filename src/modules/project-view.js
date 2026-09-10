@@ -38,9 +38,6 @@ export function displayRemoveProject(project) {
 	const projectDelete = document.querySelector(
 		`[data-id="${project.id}"]`,
 	);	
-	console.log("teste")
-	console.log(project.id);
-	console.log(projectDelete)
 
     if (projectDelete) {
         projectDelete.remove();
