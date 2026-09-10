@@ -7,7 +7,11 @@ export default class ProjectManager {
 	}
 
 	createProject(title) {
-		this.addProject(new Project(title));
+		const temp = new Project(title);
+		if (this.addProject(temp)){
+			return temp;
+		}
+		return false;
 	}
 
 	addProject(project) {
@@ -17,6 +21,7 @@ export default class ProjectManager {
 			}
 		}
 		this.projects.push(project);
+		return true;
 	}
 
 	removeProject(project) {

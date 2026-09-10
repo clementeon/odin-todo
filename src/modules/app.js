@@ -1,49 +1,134 @@
 import ProjectManager from "./project-manager.js";
 import { loadForm, clearForm } from "./form.js";
-import loadProject from "./project-view.js";
-import loadTodo, { clearTodo } from "./todo-view.js";
+import loadProject, {
+	displayNewProject,
+	displayUpdateProject,
+	displayRemoveProject,
+} from "./project-view.js";
+import loadTodo, { clearTodo, displayUpdateTodo } from "./todo-view.js";
 import { generateDefaultData } from "./load-default.js";
+import { loadProjectForm, clearProjectForm } from "./project-form.js";
 
 export default function startApp() {
 	const pm = new ProjectManager();
 	generateDefaultData(pm);
 	const projects = loadProject(pm);
 	projectSelect(projects, pm);
-}
-
-function submitNew(project, form) {
-	form.addEventListener("submit", (event) => {
-		console.log("hi");
-		event.preventDefault();
-		const tempform = new FormData(form);
-		console.log(tempform);
-	});
+	newProject(projects, pm);
 }
 
 function projectSelect(projectList, pm) {
 	projectList.addEventListener("click", (event) => {
-		clearTodo();
 		const project = event.target.closest(".project");
-		if(!project) {
+		if (!project) {
 			return;
 		}
-		pm.currentProject = pm.findProject(project.dataset.id)
+		clearTodo();
+		clearForm();
+		clearProjectForm();
+		const temp = pm.findProject(project.dataset.id);
+		pm.currentProject = temp;
 		const todoList = loadTodo(pm.currentProject);
-		console.log(pm.currentProject);
 		todoSelect(todoList, pm.currentProject);
+		loadProjectForm(pm.currentProject);
+
+		newTodo();
+		submitProject(projectList, pm, temp);
+		deleteProject(temp, pm);
 	});
 }
 
-	function todoSelect(todoList, project){
-		todoList.addEventListener('click', (event) => {
-			const todo = event.target.closest(".todo");
-			if(!todo) {
-				return;
-			}
-			clearForm();
+function newProject(projectList, pm) {
+	const newProject = document.getElementById("new-project");
+	newProject.addEventListener("click", () => {
+		clearProjectForm();
+		const form = loadProjectForm();
+		submitProject(projectList, pm, null);
+	});
+}
 
-			project.currentTodo = project.findTodo(todo.dataset.id);
-			// console.log(project.currentTodo.title)
-			loadForm(project.currentTodo);
-		})
+function submitProject(projectList, pm, project) {
+	const form = document.getElementById("project-submit");
+	form.addEventListener("click", (event) => {
+		event.preventDefault();
+		const newValue = document.getElementById("project-title").value;
+		
+		if (project) {
+			project.title = newValue;
+			displayUpdateProject(project, newValue);
+		} else {
+			const newProject = pm.createProject(newValue);
+			console.log(newProject);
+			if (newProject) {
+				displayNewProject(newProject, projectList);
+			}
+		}
+	});
+}
+
+function deleteProject(project, pm) {
+	const deleteProject = document.getElementById('project-delete');
+	deleteProject.addEventListener('click', (event)=>{
+		event.preventDefault();
+		if (project) {
+			displayRemoveProject(project);
+			pm.removeProject(project);
+			pm.currentProject = "";
+			clearTodo();
+			clearProjectForm();
+		}
+		console.log(pm)
+	})
+	
+}
+
+function todoSelect(todoList, project) {
+	todoList.addEventListener("click", (event) => {
+		const todo = event.target.closest(".todo");
+		if (!todo) {
+			return;
+		}
+		clearForm();
+		clearProjectForm();
+		project.currentTodo = project.findTodo(todo.dataset.id);
+		// console.log(project.currentTodo.title)
+		const form = loadForm(project.currentTodo);
+		todoEdit(todo, project, form);
+	});
+}
+
+function todoEdit(todo, project, form) {
+	const submitTodo = document.getElementById("todo-submit");
+	const todoID = todo.dataset.id;
+	if (!submitTodo) {
+		return;
 	}
+	submitTodo.addEventListener("click", (event)=> {
+		event.preventDefault();
+		displayUpdateTodo(todoID, form);
+		project.editTodo(todoID, form);
+		console.log(project);
+
+	})
+}
+
+function newTodo() {
+	const newTodo = document.getElementById("new-todo");
+	if (!newTodo) {
+		return;
+	}
+	newTodo.addEventListener("click", () => {
+		clearForm();
+		clearProjectForm();
+		const form = loadForm();
+	});
+}
+
+function addNewTodo() {
+	const submitButton = document.getElementById("todo-submit");
+	submitButton.addEventListener('click', (event)=> {
+		event.preventDefault();
+
+
+	})
+}

@@ -22,8 +22,8 @@ export default class Project {
 		for (let i = 0; i < this.todos.length; i++) {
 			if (this.todos[i].id == id) {
 				this.todos[i].title = form.elements.title.value;
-				this.todos[i].note = form.elements.notes.value;
-				this.todos[i].date = form.elements.date.date;
+				this.todos[i].notes = form.elements.notes.value;
+				this.todos[i].date = form.elements.date.value;
 				this.todos[i].priority = form.elements.priority.checked;
 				return;
 			}
